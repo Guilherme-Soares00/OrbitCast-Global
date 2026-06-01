@@ -1,0 +1,11 @@
+target
+.git
+.idea
+.mvn
+.vscode
+INTEGRANTES.txt
+*.iml
+*.ipr
+*.iws
+.env
+.certs
