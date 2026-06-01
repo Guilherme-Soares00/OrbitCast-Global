@@ -9,7 +9,7 @@ http://localhost:8080
 Base de produção:
 
 ```text
-https://orbitcast.onrender.com
+https://orbitcast-global-api.onrender.com
 ```
 
 Formato padrão:

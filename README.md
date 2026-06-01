@@ -17,11 +17,12 @@ O **OrbitCast** centraliza cadastros e análises para campanhas de transmissão.
 
 | Item | Valor |
 | --- | --- |
-| Produção | `https://orbitcast.onrender.com` |
+| Produção | `https://orbitcast-global-api.onrender.com` |
 | Health check | `GET /health` |
 | Dashboard | `GET /dashboard/resumo` |
 | Banco local | H2 em memória |
 | Banco externo | Oracle |
+| Repositório | `https://github.com/Guilherme-Soares00/OrbitCast-Global` |
 
 A rota raiz `/` não possui endpoint e pode retornar `404`. Para verificar se a API está online, use `/health`.
 
@@ -159,9 +160,9 @@ mvn test
 Validação em produção:
 
 ```text
-GET https://orbitcast.onrender.com/health
-GET https://orbitcast.onrender.com/dashboard/resumo
-GET https://orbitcast.onrender.com/clientes
+GET https://orbitcast-global-api.onrender.com/health
+GET https://orbitcast-global-api.onrender.com/dashboard/resumo
+GET https://orbitcast-global-api.onrender.com/clientes
 ```
 
 ## Formato de erro
