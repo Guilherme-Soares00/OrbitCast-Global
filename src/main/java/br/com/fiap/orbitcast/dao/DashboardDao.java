@@ -42,7 +42,7 @@ public class DashboardDao {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             resultSet.next();
-            return resultSet.getInt(1);
+            return lerInteiro(resultSet, 1);
         }
     }
 
@@ -53,7 +53,7 @@ public class DashboardDao {
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
-                dados.put(resultSet.getString(1), resultSet.getInt(2));
+                dados.put(resultSet.getString(1), lerInteiro(resultSet, 2));
             }
         }
 
@@ -62,18 +62,18 @@ public class DashboardDao {
 
     private void preencherMetricasSimulacao(Connection connection, DashboardResumo resumo) throws Exception {
         String sql = """
-                SELECT SUM(alcance_estimado),
-                       AVG(custo_estimado),
-                       AVG(qualidade_sinal)
+                SELECT COALESCE(SUM(alcance_estimado), 0),
+                       COALESCE(AVG(custo_estimado), 0),
+                       COALESCE(AVG(qualidade_sinal), 0)
                   FROM T_OC_SIMULACAO
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
             resultSet.next();
-            resumo.setAlcanceEstimadoTotal(resultSet.getInt(1));
-            resumo.setCustoMedioSimulacoes(resultSet.getBigDecimal(2));
-            resumo.setQualidadeMediaSinal(resultSet.getBigDecimal(3));
+            resumo.setAlcanceEstimadoTotal(lerInteiro(resultSet, 1));
+            resumo.setCustoMedioSimulacoes(lerDecimal(resultSet, 2));
+            resumo.setQualidadeMediaSinal(lerDecimal(resultSet, 3));
         }
 
         if (resumo.getCustoMedioSimulacoes() == null) {
@@ -82,5 +82,34 @@ public class DashboardDao {
         if (resumo.getQualidadeMediaSinal() == null) {
             resumo.setQualidadeMediaSinal(BigDecimal.ZERO);
         }
+    }
+
+    private int lerInteiro(ResultSet resultSet, int coluna) throws Exception {
+        Object valor = resultSet.getObject(coluna);
+
+        if (valor == null) {
+            return 0;
+        }
+        if (valor instanceof Number numero) {
+            return numero.intValue();
+        }
+
+        return Integer.parseInt(valor.toString());
+    }
+
+    private BigDecimal lerDecimal(ResultSet resultSet, int coluna) throws Exception {
+        Object valor = resultSet.getObject(coluna);
+
+        if (valor == null) {
+            return BigDecimal.ZERO;
+        }
+        if (valor instanceof BigDecimal decimal) {
+            return decimal;
+        }
+        if (valor instanceof Number numero) {
+            return BigDecimal.valueOf(numero.doubleValue());
+        }
+
+        return new BigDecimal(valor.toString());
     }
 }

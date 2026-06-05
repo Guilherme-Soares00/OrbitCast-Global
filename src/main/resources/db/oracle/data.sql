@@ -68,3 +68,5 @@ INSERT INTO T_OC_PLANO_COBERTURA (id_plano, id_campanha, nome, descricao, custo_
 INSERT INTO T_OC_PLANO_COBERTURA (id_plano, id_campanha, nome, descricao, custo_total, alcance_total, viabilidade_geral) VALUES (2, 3, 'Plano Evento Multirregional', 'Cobertura 4K para regioes de interesse cultural.', 500000.00, 420000, 'ALTA');
 INSERT INTO T_OC_PLANO_COBERTURA (id_plano, id_campanha, nome, descricao, custo_total, alcance_total, viabilidade_geral) VALUES (3, 4, 'Plano Utilidade Publica', 'Transmissao SD para comunicados de defesa civil.', 355000.00, 330000, 'MEDIA');
 INSERT INTO T_OC_PLANO_COBERTURA (id_plano, id_campanha, nome, descricao, custo_total, alcance_total, viabilidade_geral) VALUES (4, 6, 'Plano Saude Ribeirinha', 'Conteudo preventivo para comunidades ribeirinhas.', 310000.00, 560000, 'ALTA');
+
+COMMIT;
