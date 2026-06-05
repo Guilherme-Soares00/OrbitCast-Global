@@ -39,7 +39,7 @@ Turma: `1TDSPB`
 
 ## Documentação da entrega
 
-Os materiais finais da entrega de Java estão na pasta [docs](docs/).
+Os materiais da entrega de Java estão na pasta [docs](docs/).
 
 | Arquivo | Local |
 | --- | --- |
