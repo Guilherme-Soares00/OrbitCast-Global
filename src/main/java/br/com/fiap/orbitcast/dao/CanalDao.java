@@ -20,7 +20,12 @@ public class CanalDao {
     DatabaseConnection databaseConnection;
 
     public List<Canal> listar() {
-        String sql = "SELECT * FROM canais ORDER BY id";
+        String sql = """
+                SELECT id_canal AS id, id_cliente AS cliente_id, nome, tipo_conteudo,
+                       publico_alvo, classificacao_indicativa, ativo
+                  FROM T_OC_CANAL
+                 ORDER BY id_canal
+                """;
         List<Canal> canais = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -36,7 +41,12 @@ public class CanalDao {
     }
 
     public Optional<Canal> buscarPorId(Long id) {
-        String sql = "SELECT * FROM canais WHERE id = ?";
+        String sql = """
+                SELECT id_canal AS id, id_cliente AS cliente_id, nome, tipo_conteudo,
+                       publico_alvo, classificacao_indicativa, ativo
+                  FROM T_OC_CANAL
+                 WHERE id_canal = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -54,7 +64,7 @@ public class CanalDao {
     }
 
     public boolean existe(Long id) {
-        String sql = "SELECT COUNT(*) total FROM canais WHERE id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CANAL WHERE id_canal = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -70,8 +80,8 @@ public class CanalDao {
     }
 
     public boolean nomeExisteParaCliente(String nome, Long clienteId, Long idIgnorado) {
-        String sql = "SELECT COUNT(*) total FROM canais WHERE LOWER(nome) = LOWER(?) AND cliente_id = ?"
-                + (idIgnorado == null ? "" : " AND id <> ?");
+        String sql = "SELECT COUNT(*) total FROM T_OC_CANAL WHERE LOWER(nome) = LOWER(?) AND id_cliente = ?"
+                + (idIgnorado == null ? "" : " AND id_canal <> ?");
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -92,12 +102,12 @@ public class CanalDao {
 
     public Canal inserir(Canal canal) {
         String sql = """
-                INSERT INTO canais (cliente_id, nome, tipo_conteudo, publico_alvo, classificacao_indicativa, ativo)
+                INSERT INTO T_OC_CANAL (id_cliente, nome, tipo_conteudo, publico_alvo, classificacao_indicativa, ativo)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_canal"})) {
             canal.setAtivo(canal.getAtivo() == null ? Boolean.TRUE : canal.getAtivo());
 
             statement.setLong(1, canal.getClienteId());
@@ -123,10 +133,10 @@ public class CanalDao {
 
     public boolean atualizar(Long id, Canal canal) {
         String sql = """
-                UPDATE canais
-                   SET cliente_id = ?, nome = ?, tipo_conteudo = ?, publico_alvo = ?,
+                UPDATE T_OC_CANAL
+                   SET id_cliente = ?, nome = ?, tipo_conteudo = ?, publico_alvo = ?,
                        classificacao_indicativa = ?, ativo = ?
-                 WHERE id = ?
+                 WHERE id_canal = ?
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
@@ -147,7 +157,7 @@ public class CanalDao {
     }
 
     public boolean remover(Long id) {
-        String sql = "DELETE FROM canais WHERE id = ?";
+        String sql = "DELETE FROM T_OC_CANAL WHERE id_canal = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

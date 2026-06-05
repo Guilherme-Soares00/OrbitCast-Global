@@ -20,7 +20,12 @@ public class PlanoCoberturaDao {
     DatabaseConnection databaseConnection;
 
     public List<PlanoCobertura> listar() {
-        String sql = "SELECT * FROM planos_cobertura ORDER BY id";
+        String sql = """
+                SELECT id_plano AS id, id_campanha AS campanha_id, nome, descricao,
+                       custo_total, alcance_total, viabilidade_geral
+                  FROM T_OC_PLANO_COBERTURA
+                 ORDER BY id_plano
+                """;
         List<PlanoCobertura> planos = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -36,7 +41,12 @@ public class PlanoCoberturaDao {
     }
 
     public Optional<PlanoCobertura> buscarPorId(Long id) {
-        String sql = "SELECT * FROM planos_cobertura WHERE id = ?";
+        String sql = """
+                SELECT id_plano AS id, id_campanha AS campanha_id, nome, descricao,
+                       custo_total, alcance_total, viabilidade_geral
+                  FROM T_OC_PLANO_COBERTURA
+                 WHERE id_plano = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -54,7 +64,13 @@ public class PlanoCoberturaDao {
     }
 
     public List<PlanoCobertura> listarPorCampanha(Long campanhaId) {
-        String sql = "SELECT * FROM planos_cobertura WHERE campanha_id = ? ORDER BY id";
+        String sql = """
+                SELECT id_plano AS id, id_campanha AS campanha_id, nome, descricao,
+                       custo_total, alcance_total, viabilidade_geral
+                  FROM T_OC_PLANO_COBERTURA
+                 WHERE id_campanha = ?
+                 ORDER BY id_plano
+                """;
         List<PlanoCobertura> planos = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -74,8 +90,8 @@ public class PlanoCoberturaDao {
     }
 
     public boolean nomeExisteParaCampanha(String nome, Long campanhaId, Long idIgnorado) {
-        String sql = "SELECT COUNT(*) total FROM planos_cobertura WHERE LOWER(nome) = LOWER(?) AND campanha_id = ?"
-                + (idIgnorado == null ? "" : " AND id <> ?");
+        String sql = "SELECT COUNT(*) total FROM T_OC_PLANO_COBERTURA WHERE LOWER(nome) = LOWER(?) AND id_campanha = ?"
+                + (idIgnorado == null ? "" : " AND id_plano <> ?");
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -96,13 +112,13 @@ public class PlanoCoberturaDao {
 
     public PlanoCobertura inserir(PlanoCobertura plano) {
         String sql = """
-                INSERT INTO planos_cobertura
-                (campanha_id, nome, descricao, custo_total, alcance_total, viabilidade_geral)
+                INSERT INTO T_OC_PLANO_COBERTURA
+                (id_campanha, nome, descricao, custo_total, alcance_total, viabilidade_geral)
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_plano"})) {
             statement.setLong(1, plano.getCampanhaId());
             statement.setString(2, plano.getNome());
             statement.setString(3, plano.getDescricao());
@@ -126,10 +142,10 @@ public class PlanoCoberturaDao {
 
     public boolean atualizar(Long id, PlanoCobertura plano) {
         String sql = """
-                UPDATE planos_cobertura
-                   SET campanha_id = ?, nome = ?, descricao = ?, custo_total = ?,
+                UPDATE T_OC_PLANO_COBERTURA
+                   SET id_campanha = ?, nome = ?, descricao = ?, custo_total = ?,
                        alcance_total = ?, viabilidade_geral = ?
-                 WHERE id = ?
+                 WHERE id_plano = ?
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
@@ -150,7 +166,7 @@ public class PlanoCoberturaDao {
     }
 
     public boolean remover(Long id) {
-        String sql = "DELETE FROM planos_cobertura WHERE id = ?";
+        String sql = "DELETE FROM T_OC_PLANO_COBERTURA WHERE id_plano = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

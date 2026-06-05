@@ -22,7 +22,12 @@ public class SimulacaoDao {
     DatabaseConnection databaseConnection;
 
     public List<Simulacao> listar() {
-        String sql = "SELECT * FROM simulacoes ORDER BY id";
+        String sql = """
+                SELECT id_simulacao AS id, id_campanha AS campanha_id, custo_estimado,
+                       alcance_estimado, qualidade_sinal, viabilidade, recomendacao, data_simulacao
+                  FROM T_OC_SIMULACAO
+                 ORDER BY id_simulacao
+                """;
         List<Simulacao> simulacoes = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -38,7 +43,12 @@ public class SimulacaoDao {
     }
 
     public Optional<Simulacao> buscarPorId(Long id) {
-        String sql = "SELECT * FROM simulacoes WHERE id = ?";
+        String sql = """
+                SELECT id_simulacao AS id, id_campanha AS campanha_id, custo_estimado,
+                       alcance_estimado, qualidade_sinal, viabilidade, recomendacao, data_simulacao
+                  FROM T_OC_SIMULACAO
+                 WHERE id_simulacao = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -56,7 +66,13 @@ public class SimulacaoDao {
     }
 
     public List<Simulacao> listarPorCampanha(Long campanhaId) {
-        String sql = "SELECT * FROM simulacoes WHERE campanha_id = ? ORDER BY data_simulacao DESC";
+        String sql = """
+                SELECT id_simulacao AS id, id_campanha AS campanha_id, custo_estimado,
+                       alcance_estimado, qualidade_sinal, viabilidade, recomendacao, data_simulacao
+                  FROM T_OC_SIMULACAO
+                 WHERE id_campanha = ?
+                 ORDER BY data_simulacao DESC
+                """;
         List<Simulacao> simulacoes = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -77,14 +93,14 @@ public class SimulacaoDao {
 
     public Simulacao inserir(Simulacao simulacao) {
         String sql = """
-                INSERT INTO simulacoes
-                (campanha_id, custo_estimado, alcance_estimado, qualidade_sinal,
+                INSERT INTO T_OC_SIMULACAO
+                (id_campanha, custo_estimado, alcance_estimado, qualidade_sinal,
                  viabilidade, recomendacao, data_simulacao)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_simulacao"})) {
             simulacao.setDataSimulacao(simulacao.getDataSimulacao() == null ? LocalDateTime.now() : simulacao.getDataSimulacao());
 
             statement.setLong(1, simulacao.getCampanhaId());

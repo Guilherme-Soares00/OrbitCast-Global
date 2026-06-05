@@ -22,13 +22,13 @@ public class DashboardDao {
     public DashboardResumo resumo() {
         try (Connection connection = databaseConnection.getConnection()) {
             DashboardResumo resumo = new DashboardResumo();
-            resumo.setTotalClientes(contar(connection, "clientes"));
-            resumo.setTotalCanais(contar(connection, "canais"));
-            resumo.setTotalRegioes(contar(connection, "regioes"));
-            resumo.setTotalCampanhas(contar(connection, "campanhas_transmissao"));
-            resumo.setTotalSimulacoes(contar(connection, "simulacoes"));
-            resumo.setCampanhasPorStatus(agrupar(connection, "campanhas_transmissao", "status"));
-            resumo.setSimulacoesPorViabilidade(agrupar(connection, "simulacoes", "viabilidade"));
+            resumo.setTotalClientes(contar(connection, "T_OC_CLIENTE"));
+            resumo.setTotalCanais(contar(connection, "T_OC_CANAL"));
+            resumo.setTotalRegioes(contar(connection, "T_OC_REGIAO"));
+            resumo.setTotalCampanhas(contar(connection, "T_OC_CAMPANHA"));
+            resumo.setTotalSimulacoes(contar(connection, "T_OC_SIMULACAO"));
+            resumo.setCampanhasPorStatus(agrupar(connection, "T_OC_CAMPANHA", "status"));
+            resumo.setSimulacoesPorViabilidade(agrupar(connection, "T_OC_SIMULACAO", "viabilidade"));
             preencherMetricasSimulacao(connection, resumo);
             return resumo;
         } catch (Exception exception) {
@@ -65,7 +65,7 @@ public class DashboardDao {
                 SELECT SUM(alcance_estimado),
                        AVG(custo_estimado),
                        AVG(qualidade_sinal)
-                  FROM simulacoes
+                  FROM T_OC_SIMULACAO
                 """;
 
         try (PreparedStatement statement = connection.prepareStatement(sql);

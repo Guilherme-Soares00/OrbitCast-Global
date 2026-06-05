@@ -23,7 +23,13 @@ public class CampanhaTransmissaoDao {
     DatabaseConnection databaseConnection;
 
     public List<CampanhaTransmissao> listar() {
-        String sql = "SELECT * FROM campanhas_transmissao ORDER BY id";
+        String sql = """
+                SELECT id_campanha AS id, id_cliente AS cliente_id, id_canal AS canal_id,
+                       nome, descricao, data_inicio, data_fim, duracao_horas,
+                       qualidade_desejada, orcamento, status
+                  FROM T_OC_CAMPANHA
+                 ORDER BY id_campanha
+                """;
         List<CampanhaTransmissao> campanhas = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -39,7 +45,13 @@ public class CampanhaTransmissaoDao {
     }
 
     public Optional<CampanhaTransmissao> buscarPorId(Long id) {
-        String sql = "SELECT * FROM campanhas_transmissao WHERE id = ?";
+        String sql = """
+                SELECT id_campanha AS id, id_cliente AS cliente_id, id_canal AS canal_id,
+                       nome, descricao, data_inicio, data_fim, duracao_horas,
+                       qualidade_desejada, orcamento, status
+                  FROM T_OC_CAMPANHA
+                 WHERE id_campanha = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -57,7 +69,7 @@ public class CampanhaTransmissaoDao {
     }
 
     public boolean existe(Long id) {
-        String sql = "SELECT COUNT(*) total FROM campanhas_transmissao WHERE id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA WHERE id_campanha = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -73,25 +85,25 @@ public class CampanhaTransmissaoDao {
     }
 
     public boolean existePorCanal(Long canalId) {
-        String sql = "SELECT COUNT(*) total FROM campanhas_transmissao WHERE canal_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA WHERE id_canal = ?";
         return existeVinculo(sql, canalId, "Erro ao verificar campanhas do canal.");
     }
 
     public boolean possuiRegioes(Long campanhaId) {
-        String sql = "SELECT COUNT(*) total FROM campanha_regiao WHERE campanha_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA_REGIAO WHERE id_campanha = ?";
         return existeVinculo(sql, campanhaId, "Erro ao verificar regioes da campanha.");
     }
 
     public CampanhaTransmissao inserir(CampanhaTransmissao campanha) {
         String sql = """
-                INSERT INTO campanhas_transmissao
-                (cliente_id, canal_id, nome, descricao, data_inicio, data_fim,
+                INSERT INTO T_OC_CAMPANHA
+                (id_cliente, id_canal, nome, descricao, data_inicio, data_fim,
                  duracao_horas, qualidade_desejada, orcamento, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_campanha"})) {
             campanha.setStatus(campanha.getStatus() == null ? "PLANEJADA" : campanha.getStatus());
 
             statement.setLong(1, campanha.getClienteId());
@@ -121,11 +133,11 @@ public class CampanhaTransmissaoDao {
 
     public boolean atualizar(Long id, CampanhaTransmissao campanha) {
         String sql = """
-                UPDATE campanhas_transmissao
-                   SET cliente_id = ?, canal_id = ?, nome = ?, descricao = ?,
+                UPDATE T_OC_CAMPANHA
+                   SET id_cliente = ?, id_canal = ?, nome = ?, descricao = ?,
                        data_inicio = ?, data_fim = ?, duracao_horas = ?,
                        qualidade_desejada = ?, orcamento = ?, status = ?
-                 WHERE id = ?
+                 WHERE id_campanha = ?
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
@@ -150,7 +162,7 @@ public class CampanhaTransmissaoDao {
     }
 
     public boolean remover(Long id) {
-        String sql = "DELETE FROM campanhas_transmissao WHERE id = ?";
+        String sql = "DELETE FROM T_OC_CAMPANHA WHERE id_campanha = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -165,7 +177,7 @@ public class CampanhaTransmissaoDao {
 
     public void adicionarRegiao(CampanhaRegiao campanhaRegiao) {
         String sql = """
-                INSERT INTO campanha_regiao (campanha_id, regiao_id, prioridade, observacao)
+                INSERT INTO T_OC_CAMPANHA_REGIAO (id_campanha, id_regiao, prioridade, observacao)
                 VALUES (?, ?, ?, ?)
                 """;
 
@@ -183,7 +195,7 @@ public class CampanhaTransmissaoDao {
     }
 
     public boolean removerRegiao(Long campanhaId, Long regiaoId) {
-        String sql = "DELETE FROM campanha_regiao WHERE campanha_id = ? AND regiao_id = ?";
+        String sql = "DELETE FROM T_OC_CAMPANHA_REGIAO WHERE id_campanha = ? AND id_regiao = ?";
 
         try (Connection connection = databaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -198,7 +210,7 @@ public class CampanhaTransmissaoDao {
     }
 
     public boolean campanhaPossuiRegiao(Long campanhaId, Long regiaoId) {
-        String sql = "SELECT COUNT(*) total FROM campanha_regiao WHERE campanha_id = ? AND regiao_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA_REGIAO WHERE id_campanha = ? AND id_regiao = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -216,10 +228,11 @@ public class CampanhaTransmissaoDao {
 
     public List<Regiao> listarRegioes(Long campanhaId) {
         String sql = """
-                SELECT r.*
-                  FROM regioes r
-                  JOIN campanha_regiao cr ON cr.regiao_id = r.id
-                 WHERE cr.campanha_id = ?
+                SELECT r.id_regiao AS id, r.nome, r.estado, r.pais, r.populacao_estimada,
+                       r.indice_conectividade, r.latitude, r.longitude, r.area_km2, r.prioridade_social
+                  FROM T_OC_REGIAO r
+                  JOIN T_OC_CAMPANHA_REGIAO cr ON cr.id_regiao = r.id_regiao
+                 WHERE cr.id_campanha = ?
                  ORDER BY cr.prioridade DESC, r.nome
                 """;
         List<Regiao> regioes = new ArrayList<>();

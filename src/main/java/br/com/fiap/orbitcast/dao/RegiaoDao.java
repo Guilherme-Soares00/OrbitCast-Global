@@ -20,7 +20,12 @@ public class RegiaoDao {
     DatabaseConnection databaseConnection;
 
     public List<Regiao> listar() {
-        String sql = "SELECT * FROM regioes ORDER BY id";
+        String sql = """
+                SELECT id_regiao AS id, nome, estado, pais, populacao_estimada,
+                       indice_conectividade, latitude, longitude, area_km2, prioridade_social
+                  FROM T_OC_REGIAO
+                 ORDER BY id_regiao
+                """;
         List<Regiao> regioes = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -36,7 +41,12 @@ public class RegiaoDao {
     }
 
     public Optional<Regiao> buscarPorId(Long id) {
-        String sql = "SELECT * FROM regioes WHERE id = ?";
+        String sql = """
+                SELECT id_regiao AS id, nome, estado, pais, populacao_estimada,
+                       indice_conectividade, latitude, longitude, area_km2, prioridade_social
+                  FROM T_OC_REGIAO
+                 WHERE id_regiao = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -54,7 +64,7 @@ public class RegiaoDao {
     }
 
     public boolean existe(Long id) {
-        String sql = "SELECT COUNT(*) total FROM regioes WHERE id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_REGIAO WHERE id_regiao = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -72,12 +82,12 @@ public class RegiaoDao {
     public boolean nomeEstadoPaisExiste(String nome, String estado, String pais, Long idIgnorado) {
         String sql = """
                 SELECT COUNT(*) total
-                  FROM regioes
+                  FROM T_OC_REGIAO
                  WHERE LOWER(nome) = LOWER(?)
                    AND estado = ?
                    AND LOWER(pais) = LOWER(?)
                 """
-                + (idIgnorado == null ? "" : " AND id <> ?");
+                + (idIgnorado == null ? "" : " AND id_regiao <> ?");
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -98,7 +108,7 @@ public class RegiaoDao {
     }
 
     public boolean estaAssociadaCampanha(Long id) {
-        String sql = "SELECT COUNT(*) total FROM campanha_regiao WHERE regiao_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA_REGIAO WHERE id_regiao = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -115,14 +125,14 @@ public class RegiaoDao {
 
     public Regiao inserir(Regiao regiao) {
         String sql = """
-                INSERT INTO regioes
+                INSERT INTO T_OC_REGIAO
                 (nome, estado, pais, populacao_estimada, indice_conectividade,
                  latitude, longitude, area_km2, prioridade_social)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_regiao"})) {
             statement.setString(1, regiao.getNome());
             statement.setString(2, regiao.getEstado());
             statement.setString(3, regiao.getPais());
@@ -149,11 +159,11 @@ public class RegiaoDao {
 
     public boolean atualizar(Long id, Regiao regiao) {
         String sql = """
-                UPDATE regioes
+                UPDATE T_OC_REGIAO
                    SET nome = ?, estado = ?, pais = ?, populacao_estimada = ?,
                        indice_conectividade = ?, latitude = ?, longitude = ?,
                        area_km2 = ?, prioridade_social = ?
-                 WHERE id = ?
+                 WHERE id_regiao = ?
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
@@ -177,7 +187,7 @@ public class RegiaoDao {
     }
 
     public boolean remover(Long id) {
-        String sql = "DELETE FROM regioes WHERE id = ?";
+        String sql = "DELETE FROM T_OC_REGIAO WHERE id_regiao = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

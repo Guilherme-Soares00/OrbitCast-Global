@@ -22,7 +22,11 @@ public class ClienteDao {
     DatabaseConnection databaseConnection;
 
     public List<Cliente> listar() {
-        String sql = "SELECT * FROM clientes ORDER BY id";
+        String sql = """
+                SELECT id_cliente AS id, nome, documento, email, telefone, segmento, data_cadastro, ativo
+                  FROM T_OC_CLIENTE
+                 ORDER BY id_cliente
+                """;
         List<Cliente> clientes = new ArrayList<>();
 
         try (Connection connection = databaseConnection.getConnection();
@@ -38,7 +42,11 @@ public class ClienteDao {
     }
 
     public Optional<Cliente> buscarPorId(Long id) {
-        String sql = "SELECT * FROM clientes WHERE id = ?";
+        String sql = """
+                SELECT id_cliente AS id, nome, documento, email, telefone, segmento, data_cadastro, ativo
+                  FROM T_OC_CLIENTE
+                 WHERE id_cliente = ?
+                """;
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -56,7 +64,7 @@ public class ClienteDao {
     }
 
     public boolean existe(Long id) {
-        String sql = "SELECT COUNT(*) total FROM clientes WHERE id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CLIENTE WHERE id_cliente = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -72,8 +80,8 @@ public class ClienteDao {
     }
 
     public boolean documentoExiste(String documento, Long idIgnorado) {
-        String sql = "SELECT COUNT(*) total FROM clientes WHERE documento = ?"
-                + (idIgnorado == null ? "" : " AND id <> ?");
+        String sql = "SELECT COUNT(*) total FROM T_OC_CLIENTE WHERE documento = ?"
+                + (idIgnorado == null ? "" : " AND id_cliente <> ?");
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -92,8 +100,8 @@ public class ClienteDao {
     }
 
     public boolean emailExiste(String email, Long idIgnorado) {
-        String sql = "SELECT COUNT(*) total FROM clientes WHERE LOWER(email) = LOWER(?)"
-                + (idIgnorado == null ? "" : " AND id <> ?");
+        String sql = "SELECT COUNT(*) total FROM T_OC_CLIENTE WHERE LOWER(email) = LOWER(?)"
+                + (idIgnorado == null ? "" : " AND id_cliente <> ?");
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -112,23 +120,23 @@ public class ClienteDao {
     }
 
     public boolean possuiCanais(Long id) {
-        String sql = "SELECT COUNT(*) total FROM canais WHERE cliente_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CANAL WHERE id_cliente = ?";
         return existeVinculo(sql, id, "Erro ao verificar canais do cliente.");
     }
 
     public boolean possuiCampanhas(Long id) {
-        String sql = "SELECT COUNT(*) total FROM campanhas_transmissao WHERE cliente_id = ?";
+        String sql = "SELECT COUNT(*) total FROM T_OC_CAMPANHA WHERE id_cliente = ?";
         return existeVinculo(sql, id, "Erro ao verificar campanhas do cliente.");
     }
 
     public Cliente inserir(Cliente cliente) {
         String sql = """
-                INSERT INTO clientes (nome, documento, email, telefone, segmento, data_cadastro, ativo)
+                INSERT INTO T_OC_CLIENTE (nome, documento, email, telefone, segmento, data_cadastro, ativo)
                 VALUES (?, ?, ?, ?, ?, ?, ?)
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id"})) {
+             PreparedStatement statement = connection.prepareStatement(sql, new String[]{"id_cliente"})) {
             cliente.setDataCadastro(cliente.getDataCadastro() == null ? LocalDateTime.now() : cliente.getDataCadastro());
             cliente.setAtivo(cliente.getAtivo() == null ? Boolean.TRUE : cliente.getAtivo());
 
@@ -156,9 +164,9 @@ public class ClienteDao {
 
     public boolean atualizar(Long id, Cliente cliente) {
         String sql = """
-                UPDATE clientes
+                UPDATE T_OC_CLIENTE
                    SET nome = ?, documento = ?, email = ?, telefone = ?, segmento = ?, ativo = ?
-                 WHERE id = ?
+                 WHERE id_cliente = ?
                 """;
 
         try (Connection connection = databaseConnection.getConnection();
@@ -179,7 +187,7 @@ public class ClienteDao {
     }
 
     public boolean remover(Long id) {
-        String sql = "DELETE FROM clientes WHERE id = ?";
+        String sql = "DELETE FROM T_OC_CLIENTE WHERE id_cliente = ?";
 
         try (Connection connection = databaseConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

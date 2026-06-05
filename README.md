@@ -68,6 +68,17 @@ src/main/resources/db
 src/main/resources/db/oracle
 ```
 
+Padrão de nomenclatura do banco:
+
+```text
+Tabelas: T_OC_CLIENTE, T_OC_CANAL, T_OC_REGIAO, T_OC_CAMPANHA,
+         T_OC_CAMPANHA_REGIAO, T_OC_SIMULACAO, T_OC_PLANO_COBERTURA
+Colunas: letras minúsculas
+Chaves: id_cliente, id_canal, id_regiao, id_campanha, id_simulacao, id_plano
+```
+
+Campos descritivos como `nome`, `documento` e `email` não recebem `_id`, porque não são identificadores técnicos nem chaves estrangeiras.
+
 ## Rodando localmente
 
 ```shell
