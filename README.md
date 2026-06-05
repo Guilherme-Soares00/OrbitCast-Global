@@ -37,6 +37,15 @@ A rota raiz `/` não possui endpoint e pode retornar `404`. Para verificar se a 
 
 Turma: `1TDSPB`
 
+## Documentação da entrega
+
+Os materiais finais da entrega de Java estão na pasta [docs](docs/).
+
+| Arquivo | Local |
+| --- | --- |
+| PDF da documentação técnica | [docs/OrbitCast_Documentacao.pdf](docs/OrbitCast_Documentacao.pdf) |
+| Imagens dos diagramas | [docs/diagramas](docs/diagramas/) |
+
 ## Tecnologias
 
 | Categoria | Ferramentas |

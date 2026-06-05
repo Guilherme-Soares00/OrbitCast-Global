@@ -1,0 +1,83 @@
+<svg width="1200" height="820" viewBox="0 0 1200 820" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}
+      .title{font-family:Segoe UI,Arial,sans-serif;font-size:34px;font-weight:700;fill:#102a5c}
+      .subtitle{font-family:Segoe UI,Arial,sans-serif;font-size:17px;fill:#475569}
+      .box{fill:#ffffff;stroke:#2563eb;stroke-width:3;rx:16}
+      .box-dark{fill:#1e3a8a;stroke:#1e3a8a;stroke-width:3;rx:16}
+      .box-green{fill:#ffffff;stroke:#16a34a;stroke-width:3;rx:16}
+      .side{fill:#eef6ff;stroke:#94a3b8;stroke-width:2;stroke-dasharray:8 6;rx:16}
+      .label{font-family:Segoe UI,Arial,sans-serif;font-size:23px;font-weight:700;fill:#102a5c}
+      .label-white{font-family:Segoe UI,Arial,sans-serif;font-size:23px;font-weight:700;fill:#ffffff}
+      .small{font-family:Segoe UI,Arial,sans-serif;font-size:15px;fill:#475569}
+      .small-white{font-family:Segoe UI,Arial,sans-serif;font-size:15px;fill:#dbeafe}
+      .green{fill:#15803d}
+      .arrow{stroke:#2563eb;stroke-width:4;fill:none;marker-end:url(#arrow)}
+      .note-title{font-family:Segoe UI,Arial,sans-serif;font-size:19px;font-weight:700;fill:#102a5c}
+      .note{font-family:Segoe UI,Arial,sans-serif;font-size:15px;fill:#334155}
+    </style>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1200" height="820"/>
+  <text class="title" x="60" y="62">Diagrama de Arquitetura - OrbitCast</text>
+  <text class="subtitle" x="60" y="92">Fluxo principal da API Java em camadas e componentes transversais do projeto</text>
+
+  <rect class="box" x="120" y="130" width="580" height="78" rx="16"/>
+  <text class="label" x="410" y="162" text-anchor="middle">Front-End</text>
+  <text class="small" x="410" y="187" text-anchor="middle">React + TypeScript + Vite consumindo JSON via HTTP</text>
+
+  <path class="arrow" d="M410 213 L410 253"/>
+  <text class="small" x="430" y="238">HTTP / JSON / CORS</text>
+
+  <rect class="box-dark" x="120" y="258" width="580" height="78" rx="16"/>
+  <text class="label-white" x="410" y="290" text-anchor="middle">resources</text>
+  <text class="small-white" x="410" y="315" text-anchor="middle">Endpoints REST, verbos HTTP, status e respostas da API</text>
+
+  <path class="arrow" d="M410 341 L410 379"/>
+
+  <rect class="box" x="120" y="384" width="580" height="78" rx="16"/>
+  <text class="label" x="410" y="416" text-anchor="middle">bo</text>
+  <text class="small" x="410" y="441" text-anchor="middle">Regras de negocio, validacoes e calculo de simulacoes</text>
+
+  <path class="arrow" d="M410 467 L410 505"/>
+
+  <rect class="box" x="120" y="510" width="580" height="78" rx="16"/>
+  <text class="label" x="410" y="542" text-anchor="middle">dao</text>
+  <text class="small" x="410" y="567" text-anchor="middle">Acesso a dados com JDBC manual e SQL padronizado</text>
+
+  <path class="arrow" d="M410 593 L410 631"/>
+
+  <rect class="box" x="120" y="636" width="580" height="78" rx="16"/>
+  <text class="label" x="410" y="668" text-anchor="middle">connection</text>
+  <text class="small" x="410" y="693" text-anchor="middle">DatabaseConnection e DatabaseInitializer</text>
+
+  <path class="arrow" d="M410 719 L410 753"/>
+
+  <rect class="box-green" x="120" y="758" width="580" height="48" rx="16"/>
+  <text class="label green" x="410" y="790" text-anchor="middle">Banco de Dados: H2 local e Oracle em producao</text>
+
+  <rect class="side" x="780" y="190" width="330" height="470" rx="16"/>
+  <text class="note-title" x="810" y="232">Camadas transversais</text>
+
+  <text class="note-title" x="810" y="286">entities</text>
+  <text class="note" x="810" y="312">Classes-modelo que representam</text>
+  <text class="note" x="810" y="334">clientes, canais, regioes, campanhas,</text>
+  <text class="note" x="810" y="356">simulacoes e planos de cobertura.</text>
+
+  <text class="note-title" x="810" y="416">dto</text>
+  <text class="note" x="810" y="442">Objetos de transferencia para respostas</text>
+  <text class="note" x="810" y="464">especificas, como DashboardResumo.</text>
+
+  <text class="note-title" x="810" y="524">exceptions</text>
+  <text class="note" x="810" y="550">BusinessException,</text>
+  <text class="note" x="810" y="572">EntityNotFoundException,</text>
+  <text class="note" x="810" y="594">DataAccessException</text>
+  <text class="note" x="810" y="616">e ApiExceptionMapper.</text>
+
+  <path class="arrow" d="M700 423 C740 423 750 400 780 400"/>
+  <path class="arrow" d="M700 549 C740 549 750 500 780 500"/>
+</svg>

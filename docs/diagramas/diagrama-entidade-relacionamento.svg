@@ -1,0 +1,123 @@
+<svg width="1400" height="940" viewBox="0 0 1400 940" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .bg{fill:#f8fafc}
+      .title{font-family:Segoe UI,Arial,sans-serif;font-size:34px;font-weight:700;fill:#102a5c}
+      .subtitle{font-family:Segoe UI,Arial,sans-serif;font-size:17px;fill:#475569}
+      .ent{fill:#ffffff;stroke:#1e3a8a;stroke-width:3;rx:12}
+      .ent-green{fill:#ffffff;stroke:#16a34a;stroke-width:3;rx:12}
+      .hdr{fill:#1e3a8a}
+      .hdr-green{fill:#16a34a}
+      .tname{font-family:Segoe UI,Arial,sans-serif;fill:#ffffff;font-size:18px;font-weight:700}
+      .col{font-family:Segoe UI,Arial,sans-serif;fill:#1f2937;font-size:15px}
+      .pk{font-weight:700}
+      .rel{stroke:#2563eb;stroke-width:3;fill:none;marker-end:url(#arrow-blue)}
+      .relN{stroke:#16a34a;stroke-width:3;fill:none;stroke-dasharray:8 6;marker-end:url(#arrow-green)}
+      .card{font-family:Segoe UI,Arial,sans-serif;fill:#2563eb;font-size:16px;font-weight:700}
+      .cardN{font-family:Segoe UI,Arial,sans-serif;fill:#16a34a;font-size:16px;font-weight:700}
+      .legend{font-family:Segoe UI,Arial,sans-serif;fill:#475569;font-size:16px}
+      .mono{font-family:Consolas,monospace}
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1400" height="940"/>
+  <text class="title" x="60" y="62">Diagrama Entidade-Relacionamento - OrbitCast</text>
+  <text class="subtitle" x="60" y="92">Modelo Oracle com 7 tabelas, chaves primarias, chaves estrangeiras e relacionamento N:N por tabela associativa</text>
+
+  <path class="rel" d="M250 245 L250 345"/>
+  <text class="card" x="266" y="302">1:N</text>
+  <path class="rel" d="M390 175 L580 270"/>
+  <text class="card" x="464" y="210">1:N</text>
+  <path class="rel" d="M390 405 L580 350"/>
+  <text class="card" x="458" y="405">1:N</text>
+  <path class="rel" d="M760 455 L760 650"/>
+  <text class="card" x="776" y="565">1:N</text>
+  <path class="rel" d="M660 455 L440 660"/>
+  <text class="card" x="520" y="585">1:N</text>
+  <path class="relN" d="M900 345 L1115 470"/>
+  <text class="cardN" x="994" y="382">N</text>
+  <path class="relN" d="M1225 290 L1225 465"/>
+  <text class="cardN" x="1241" y="383">N</text>
+
+  <g>
+    <rect class="ent" x="90" y="130" width="300" height="120" rx="12"/>
+    <rect class="hdr" x="90" y="130" width="300" height="34" rx="12"/>
+    <text class="tname" x="108" y="153">T_OC_CLIENTE</text>
+    <text class="col pk" x="108" y="190">PK id_cliente</text>
+    <text class="col" x="108" y="214">nome, segmento</text>
+    <text class="col" x="108" y="238">documento UNIQUE, email, ativo</text>
+  </g>
+
+  <g>
+    <rect class="ent" x="90" y="345" width="300" height="118" rx="12"/>
+    <rect class="hdr" x="90" y="345" width="300" height="34" rx="12"/>
+    <text class="tname" x="108" y="368">T_OC_CANAL</text>
+    <text class="col pk" x="108" y="405">PK id_canal</text>
+    <text class="col" x="108" y="429">FK id_cliente</text>
+    <text class="col" x="108" y="453">nome, tipo_conteudo, ativo</text>
+  </g>
+
+  <g>
+    <rect class="ent" x="580" y="240" width="320" height="215" rx="12"/>
+    <rect class="hdr" x="580" y="240" width="320" height="34" rx="12"/>
+    <text class="tname" x="598" y="263">T_OC_CAMPANHA</text>
+    <text class="col pk" x="598" y="300">PK id_campanha</text>
+    <text class="col" x="598" y="324">FK id_cliente, id_canal</text>
+    <text class="col" x="598" y="348">nome, descricao</text>
+    <text class="col" x="598" y="372">data_inicio, data_fim</text>
+    <text class="col" x="598" y="396">duracao_horas CHECK &gt; 0</text>
+    <text class="col" x="598" y="420">qualidade_desejada, orcamento</text>
+    <text class="col" x="598" y="444">status CHECK enum</text>
+  </g>
+
+  <g>
+    <rect class="ent" x="1070" y="130" width="300" height="160" rx="12"/>
+    <rect class="hdr" x="1070" y="130" width="300" height="34" rx="12"/>
+    <text class="tname" x="1088" y="153">T_OC_REGIAO</text>
+    <text class="col pk" x="1088" y="190">PK id_regiao</text>
+    <text class="col" x="1088" y="214">nome, estado, pais</text>
+    <text class="col" x="1088" y="238">populacao_estimada</text>
+    <text class="col" x="1088" y="262">indice_conectividade, area_km2</text>
+    <text class="col" x="1088" y="286">latitude, longitude, prioridade_social</text>
+  </g>
+
+  <g>
+    <rect class="ent-green" x="1085" y="470" width="285" height="130" rx="12"/>
+    <rect class="hdr-green" x="1085" y="470" width="285" height="34" rx="12"/>
+    <text class="tname" x="1103" y="493">T_OC_CAMPANHA_REGIAO</text>
+    <text class="col pk" x="1103" y="530">PK id_campanha</text>
+    <text class="col pk" x="1103" y="554">PK id_regiao</text>
+    <text class="col" x="1103" y="578">prioridade, observacao</text>
+  </g>
+
+  <g>
+    <rect class="ent" x="590" y="650" width="330" height="160" rx="12"/>
+    <rect class="hdr" x="590" y="650" width="330" height="34" rx="12"/>
+    <text class="tname" x="608" y="673">T_OC_SIMULACAO</text>
+    <text class="col pk" x="608" y="710">PK id_simulacao</text>
+    <text class="col" x="608" y="734">FK id_campanha CASCADE</text>
+    <text class="col" x="608" y="758">custo_estimado, alcance_estimado</text>
+    <text class="col" x="608" y="782">qualidade_sinal, viabilidade</text>
+    <text class="col" x="608" y="806">recomendacao, data_simulacao</text>
+  </g>
+
+  <g>
+    <rect class="ent" x="90" y="650" width="350" height="150" rx="12"/>
+    <rect class="hdr" x="90" y="650" width="350" height="34" rx="12"/>
+    <text class="tname" x="108" y="673">T_OC_PLANO_COBERTURA</text>
+    <text class="col pk" x="108" y="710">PK id_plano</text>
+    <text class="col" x="108" y="734">FK id_campanha CASCADE</text>
+    <text class="col" x="108" y="758">nome, descricao</text>
+    <text class="col" x="108" y="782">custo_total, alcance_total, viabilidade_geral</text>
+  </g>
+
+  <rect x="60" y="860" width="1280" height="44" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+  <text class="legend" x="84" y="889">Azul: relacionamento 1:N. Verde tracejado: relacionamento N:N resolvido pela tabela associativa </text>
+  <text class="legend mono" x="804" y="889">T_OC_CAMPANHA_REGIAO</text>
+</svg>
