@@ -14,4 +14,5 @@ Esta pasta reúne os arquivos de apoio para a entrega de Java/DDD do projeto Orb
 
 - A API de produção está em `https://orbitcast-global-api.onrender.com`.
 - O front-end informado para a entrega está em `https://orbitcast-front.vercel.app`.
+- O vídeo pitch está em `https://youtu.be/HhciukgoQXE`.
 - O vídeo de demonstração informado está em `https://youtu.be/_y9vuN-QIHY`.
