@@ -19,6 +19,7 @@ O **OrbitCast** centraliza cadastros e análises para campanhas de transmissão.
 | --- | --- |
 | Produção | `https://orbitcast-global-api.onrender.com` |
 | Health check | `GET /health` |
+| Swagger UI | `GET /q/swagger-ui` |
 | Dashboard | `GET /dashboard/resumo` |
 | Banco local | H2 em memória |
 | Banco externo | Oracle |
@@ -112,6 +113,12 @@ Resposta esperada:
 OrbitCast API online
 ```
 
+Swagger UI:
+
+```text
+http://localhost:8080/q/swagger-ui
+```
+
 ## Oracle
 
 Para rodar com Oracle, configure as variáveis de ambiente e inicie a aplicação com o perfil `oracle`.
@@ -181,6 +188,7 @@ Validação em produção:
 
 ```text
 GET https://orbitcast-global-api.onrender.com/health
+GET https://orbitcast-global-api.onrender.com/q/swagger-ui
 GET https://orbitcast-global-api.onrender.com/dashboard/resumo
 GET https://orbitcast-global-api.onrender.com/clientes
 ```
